@@ -43,26 +43,25 @@ const renderItem = ({ item }) => (
 
   return (
     <View style={styles.container}>
+      <View style={{display:'flex',flexDirection:'row'}}>
        <View style={{width:100}}>
        <Button
         title="Add Category"
         onPress={handleAddCategory}
-        style={{ marginTop: 10 }}
-      />
+        />
       </View>
-      <View style={{width:100, marginTop:10}}>
+      <View style={{width:100,marginLeft:10}}>
       <Button
         title="Add Product"
         onPress={handleAddProduct}
-        style={{ marginTop: 10 , maxWidth:10}}
-      />
-       </View>
+        />
+      </View>
+      </View>
       <View style={styles.header}>
         <Text style={styles.headerText}>Product Name</Text>
         <Text style={styles.headerText}>Category</Text>
         <Text style={styles.headerText}>Date Type</Text>
         <Text style={styles.headerText}>Date</Text>
-        {/* Add more Text components for additional columns */}
       </View>
       <FlatList
         data={productdata}

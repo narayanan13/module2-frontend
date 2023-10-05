@@ -17,12 +17,12 @@ const CategoryForm = ({navigation}) => {
         {
           categoryName:categoryName
         }).then((res)=>{
-          if(res.data.message==="success"){
+          if(res.data.message==="Success"){
             alert("Category Added Successfully!");
             navigation.navigate("Main");
           }
           else{
-            alert("Error occurred in adding category");
+            alert(res.data.message);
           }
         })
     }

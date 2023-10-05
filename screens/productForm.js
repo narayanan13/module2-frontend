@@ -3,15 +3,17 @@ import {
   View,
   Text,
   TextInput,
+  StyleSheet,
   Button,
   Pressable,
   TouchableOpacity,
 } from 'react-native';
 import axios from 'axios';
 import DateTimePicker from '@react-native-community/datetimepicker';
-// import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker'; // Import Picker from the new package
 import { useNavigation } from '@react-navigation/native';
+import { Notifications } from 'expo-notifications';
+import Scanner from './scanner';
 
 const ProductForm = () => {
   const navigation = useNavigation()
@@ -20,10 +22,18 @@ const ProductForm = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [dateType, setDateType] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
-  const [date, setDate] = useState(new Date("1999-07-10"))
+  const [date, setDate] = useState(new Date("2023-09-10"))
   const [showPicker,setShowPicker]=useState(false)
   const [selected, setSelected] = React.useState("");
+  const [remainderDate, setRemainderDate] = useState(new Date());
+  const [showDatePicker, setShowDatePicker]= useState(false);
 
+
+  const handleScanner=()=>{
+    console.log('scanner clicked')
+    navigation.navigate('Scanner')
+  }  
+  
   const confirmIOSDate = () =>{
           setExpiryDate(date.toDateString())
           toggleDate()
@@ -55,6 +65,7 @@ const ProductForm = () => {
         const response = await axios.get("https://categservice.onrender.com/getCategories");
         if (response.data.categories) {
           setCategoryData(response.data.categories);
+          console.log(categoryData);
         } else {
           console.error("No categories found in the response.");
         }
@@ -66,14 +77,24 @@ const ProductForm = () => {
     fetchCategories();
   }, []); // Fetch categories once when the component mounts
 
-  
+  const handleDateChange=(event,remainderDate)=>{
+    if(remainderDate!==undefined){
+      setRemainderDate(remainderDate);
+    }
+    setShowDatePicker(Platform.OS==='ios');
+  }
+
+  const toggleDatePicker=()=>{
+    setShowDatePicker((prev)=>!prev);
+  }
+
   const openDatePicker = async () => {
     try {
-      const { action, year, month, day } = await DateTimePickerAndroid.open({
+      const { action, year, month, day } = await DateTimePicker.open({
         date: new Date(),
         mode: 'spinner',
       });
-      if (action !== DateTimePickerAndroid.dismissedAction) {
+      if (action !== DateTimePicker.dismissedAction) {
         // Selected date
         const selectedDate = `${year}-${month + 1}-${day}`;
         setExpiryDate(selectedDate);
@@ -83,7 +104,7 @@ const ProductForm = () => {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
     // Handle form submission logic here
     console.log('onsubmit', {
       productName,
@@ -92,15 +113,19 @@ const ProductForm = () => {
       expiryDate,
       // imageUri,
     });
+
+    
     try{
+      
       axios.post('https://categservice.onrender.com/addProductService', {
       productName:productName,
       categoryName:selectedCategory,
       dateType:dateType,
-      expiryDate:expiryDate
+      expiryDate:expiryDate,
+      reminderDate:remainderDate
     }).then((res)=>{
       if(res.data.message==='success'){
-        alert('Succesfully added');
+        alert('Successfully added');
         navigation.navigate('Main');
       }else{
         alert('Error occured');
@@ -108,7 +133,7 @@ const ProductForm = () => {
     })
     }
     catch (error) {
-    console.log('error occured while axios', error);  
+    console.log('error occurred while axios', error);  
     }
   };
 
@@ -119,12 +144,11 @@ const ProductForm = () => {
       {/* Add Image Button */}
       
       {/* Product Name */}
-      
+      <Text style={{marginTop:10}}>Enter Product Name:</Text>
       <TextInput
-      placeholder='Enter Product Name'
         value={productName}
         onChangeText={(text) => setProductName(text)}
-        style={{ marginTop: 10, borderWidth: 1, padding: 10 }}
+        style={{ borderWidth: 1, padding: 10 }}
       />
 
       {/* Category Dropdown */}
@@ -154,7 +178,8 @@ const ProductForm = () => {
       </View>
 
       {/* Expiry Date */}
-      <View style={{borderWidth:1, marginTop:10, padding:10 }} >
+      <Text style={{marginTop:10}}>Enter Date:</Text>
+      <View style={{borderWidth:1, padding:10 }} >
        {showPicker && (
       <DateTimePicker
           mode ="date"
@@ -205,10 +230,33 @@ const ProductForm = () => {
       }
   </View>
 
+  {/* Reminder date */}
+  <Text style={{marginTop:10}}>Reminder Date:</Text>
+  <View style={{borderWidth:1, display:'flex', flexDirection:'row', height: 50}}>
+    <TouchableOpacity onPress={toggleDatePicker}>
+        <Text>{remainderDate.toDateString()}</Text>
+      </TouchableOpacity>
+      {showDatePicker && (
+        <DateTimePicker
+          value={remainderDate}
+          mode="date"
+          placeholder="default"
+          onChange={handleDateChange}
+        />
+      )}
+  </View>
+        <View style={{display:'flex', flexDirection:'row'}}>
+
       {/* Submit Button */}
       <View style={{marginTop:10}}>
         <Button title="Submit" onPress={handleSubmit} style={{ marginTop: 20 }} />
       </View>
+
+      {/* Scanner Button */}
+      <View style={{marginLeft:10,marginTop:10}}>
+        <Button title="Scan QR" onPress={handleScanner} style={{ marginTop: 20 }} />
+      </View>
+        </View>
     </View>
   );
 };
