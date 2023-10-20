@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, FlatList, StyleSheet, Button } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import Notification from './Notification';
 const Main = () => {
     const navigation = useNavigation();
 
@@ -30,12 +31,16 @@ const handleAddProduct = ()=>{
     navigation.navigate('ProductForm');
     
 }
+const handleNotification=()=>{
+  navigation.navigate(Notification);
+}
 const renderItem = ({ item }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{item.productName}</Text>
       <Text style={styles.cell}>{item.categoryName}</Text>
       <Text style={styles.cell}>{item.dateType}</Text>
       <Text style={styles.cell}>{item.expiryDate}</Text>
+      <Button title="Notify" onPress={handleNotification}/>
       {/* Add more Text components for additional columns */}
     </View>
   );
@@ -62,6 +67,7 @@ const renderItem = ({ item }) => (
         <Text style={styles.headerText}>Category</Text>
         <Text style={styles.headerText}>Date Type</Text>
         <Text style={styles.headerText}>Date</Text>
+        <Text style={styles.headerText}>Action</Text>
       </View>
       <FlatList
         data={productdata}

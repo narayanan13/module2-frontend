@@ -29,6 +29,10 @@ const ProductForm = () => {
   const [showDatePicker, setShowDatePicker]= useState(false);
 
 
+  const handleNotification=()=>{
+    console.log('Notification Clicked');
+    navigation.navigate('Notification');
+  }
   const handleScanner=()=>{
     console.log('scanner clicked')
     navigation.navigate('Scanner')
@@ -229,35 +233,12 @@ const ProductForm = () => {
       </Pressable>)
       }
   </View>
-
-  {/* Reminder date */}
-  <Text style={{marginTop:10}}>Reminder Date:</Text>
-  <View style={{borderWidth:1, display:'flex', flexDirection:'row', height: 50}}>
-    <TouchableOpacity onPress={toggleDatePicker}>
-        <Text>{remainderDate.toDateString()}</Text>
-      </TouchableOpacity>
-      {showDatePicker && (
-        <DateTimePicker
-          value={remainderDate}
-          mode="date"
-          placeholder="default"
-          onChange={handleDateChange}
-        />
-      )}
-  </View>
-        <View style={{display:'flex', flexDirection:'row'}}>
-
-      {/* Submit Button */}
-      <View style={{marginTop:10}}>
-        <Button title="Submit" onPress={handleSubmit} style={{ marginTop: 20 }} />
-      </View>
-
+  
       {/* Scanner Button */}
       <View style={{marginLeft:10,marginTop:10}}>
         <Button title="Scan QR" onPress={handleScanner} style={{ marginTop: 20 }} />
       </View>
         </View>
-    </View>
   );
 };
 

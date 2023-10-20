@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { NavigationContainer } from '@react-navigation/native';
+
+import Notification from './screens/Notification';
 import ProductForm from './screens/productForm';
 import CategoryForm from './screens/categoryForm';
 import Main from './screens/main';
@@ -15,6 +17,7 @@ export default function App() {
         <Stack.Screen name="ProductForm" component={ProductForm}/>
         <Stack.Screen name="Scanner" component={Scanner}/>
         <Stack.Screen name="CategoryForm" component={CategoryForm}/>
+        <Stack.Screen name="Notification" component={Notification}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
