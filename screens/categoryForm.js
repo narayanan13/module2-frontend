@@ -1,13 +1,13 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 
 const CategoryForm = ({navigation}) => {
   const [categoryName, setCategoryName] = useState('');
 
   const handleAddCategory = async() => {
     if(categoryName===''){
-      alert("Please enter the Category name!");
+      Alert.alert('MISSING..',"Please enter the Category name!");
       return;
     }
 
@@ -18,11 +18,11 @@ const CategoryForm = ({navigation}) => {
           categoryName:categoryName
         }).then((res)=>{
           if(res.data.message==="Success"){
-            alert("Category Added Successfully!");
+            Alert.alert('SUCCESS',"Category Added Successfully!");
             navigation.navigate("Main");
           }
           else{
-            alert(res.data.message);
+            Alert.alert('FAILURE',res.data.message);
           }
         })
     }

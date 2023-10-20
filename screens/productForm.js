@@ -3,7 +3,7 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
+  Alert,
   Button,
   Pressable,
   TouchableOpacity,
@@ -111,7 +111,7 @@ const ProductForm = () => {
   const handleSubmit = async() => {
     // Handle form submission logic here
     if(expiryDate<new Date()){
-      alert('Expiry date must be in the future!');
+      Alert.alert('WARNING..!','Expiry date must be in the future!');
     }
     console.log('onsubmit', {
       productName,
@@ -131,10 +131,10 @@ const ProductForm = () => {
       expiryDate:expiryDate,
     }).then((res)=>{
       if(res.data.message==='success'){
-        alert('Successfully added');
+        Alert.alert('SUCCESS','Successfully added');
         navigation.navigate('Main');
       }else{
-        alert('Error occured');
+        Alert.alert('FAILURE','Error occured');
       }
     })
     }

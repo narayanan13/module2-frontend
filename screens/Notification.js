@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Text, View, Button, Platform, TextInput, StyleSheet } from 'react-native';
+import { Text, View, Button, Platform, TextInput, StyleSheet, Alert } from 'react-native';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import { TouchableOpacity } from 'react-native';
@@ -41,7 +41,7 @@ export default function Notification({ route }) {
 
   const scheduleNotification = async () => {
     if (!notifyOn) {
-      alert('Please select a notifyOn date and time.');
+      Alert.alert('MISSING..','Please select a notifyOn date and time.');
       return;
     }
     
@@ -50,12 +50,12 @@ export default function Notification({ route }) {
     const expDate = new Date(expiryDate);
 
     if(notifyOnDate >= expDate){
-        alert('Notification cannot be beyond or equal to expiry date!');
+        Alert.alert('WARNING...!','Notification date cannot be beyond or equal to expiry date!');
         return;
     }
     // Ensure the date is in the future
-    if (notifyOnDate < new Date()) {
-      alert('NotifyOn date and time must be in the future.');
+    if (notifyOnDate <= new Date()) {
+      Alert.alert('WARNING...!', 'NotifyOn date must be in the future.');
       return;
     }
 
@@ -74,11 +74,11 @@ export default function Notification({ route }) {
             notifyOnDate:notifyOnDate,
         }).then((res)=>{
             if(res.data.message==='success'){
-                alert("Notification set successful");
+                Alert.alert('SUCCESS..!',"Notification set successful");
                 navigation.navigate('Main');
             }
             else{
-                alert('Error occurred');
+                Alert.alert('FAILURE..','Error occurred');
             }
         })
     }
@@ -95,8 +95,6 @@ export default function Notification({ route }) {
         date: notifyOnDate,
       },
     });
-
-    alert('Notification scheduled successfully.');
   };
 
   return (
