@@ -45,11 +45,12 @@ const CategoryForm = ({navigation}) => {
       
 
       {/* Add Category Button */}
+      <View style={{marginTop:20}}> 
       <Button
         title="Add Category"
         onPress={handleAddCategory}
-        style={{ marginTop: 10 }}
-      />
+        />
+        </View>
     </View>
   );
 };

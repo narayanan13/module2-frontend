@@ -22,7 +22,7 @@ const ProductForm = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [dateType, setDateType] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
-  const [date, setDate] = useState(new Date("2023-09-10"))
+  const [date, setDate] = useState(new Date())
   const [showPicker,setShowPicker]=useState(false)
   const [selected, setSelected] = React.useState("");
   const [remainderDate, setRemainderDate] = useState(new Date());
@@ -110,6 +110,9 @@ const ProductForm = () => {
 
   const handleSubmit = async() => {
     // Handle form submission logic here
+    if(expiryDate<new Date()){
+      alert('Expiry date must be in the future!');
+    }
     console.log('onsubmit', {
       productName,
       selectedCategory,
@@ -126,7 +129,6 @@ const ProductForm = () => {
       categoryName:selectedCategory,
       dateType:dateType,
       expiryDate:expiryDate,
-      reminderDate:remainderDate
     }).then((res)=>{
       if(res.data.message==='success'){
         alert('Successfully added');
@@ -142,7 +144,7 @@ const ProductForm = () => {
   };
 
   return (
-    <View style={{ padding: 20 }}>
+    <View style={{ padding: 20}}>
       <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>New Product</Text>
 
       {/* Add Image Button */}
@@ -175,9 +177,9 @@ const ProductForm = () => {
           onValueChange={(itemValue) => setDateType(itemValue)}
         >
           <Picker.Item label="Select date type" value="" />
-          <Picker.Item label="Expiry Date" value="Expiry Date" />
-          <Picker.Item label="Warranty Date" value="Warranty Date" />
-          <Picker.Item label="Guarantee Date" value="Guarantee Date" />
+          <Picker.Item label="Expiry" value="Expiry" />
+          <Picker.Item label="Warranty" value="Warranty" />
+          <Picker.Item label="Guarantee" value="Guarantee" />
         </Picker>
       </View>
 
@@ -235,8 +237,11 @@ const ProductForm = () => {
   </View>
   
       {/* Scanner Button */}
-      <View style={{marginLeft:10,marginTop:10}}>
-        <Button title="Scan QR" onPress={handleScanner} style={{ marginTop: 20 }} />
+      <View style={{marginTop:10}}>
+      <Button title="Scan QR" onPress={handleScanner} style={{ marginTop: 20 }} />
+      </View>
+      <View style={{marginTop:10}}>
+        <Button title="Add Product" onPress={handleSubmit} style={{ marginTop: 20 }} />
       </View>
         </View>
   );

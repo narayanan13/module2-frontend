@@ -40,7 +40,7 @@ const handleNotification=(item)=>{
 const renderItem = ({ item }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{item.productName}</Text>
-      <Text style={styles.cell}>{item.categoryName}</Text>
+      {/* <Text style={styles.cell}>{item.categoryName}</Text> */}
       <Text style={styles.cell}>{item.dateType}</Text>
       <Text style={styles.cell}>{item.expiryDate}</Text>
       <Button title="Notify" onPress={() => handleNotification(item)} />
@@ -67,7 +67,7 @@ const renderItem = ({ item }) => (
       </View>
       <View style={styles.header}>
         <Text style={styles.headerText}>Product Name</Text>
-        <Text style={styles.headerText}>Category</Text>
+        {/* <Text style={styles.headerText}>Category</Text> */}
         <Text style={styles.headerText}>Date Type</Text>
         <Text style={styles.headerText}>Date</Text>
         <Text style={styles.headerText}>Action</Text>
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+    backgroundColor: '#C0E9F8',
   },
   header: {
     flexDirection: 'row',
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+    marginTop:10,
   },
   headerText: {
     flex: 1,
