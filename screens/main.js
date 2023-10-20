@@ -31,8 +31,11 @@ const handleAddProduct = ()=>{
     navigation.navigate('ProductForm');
     
 }
-const handleNotification=()=>{
-  navigation.navigate(Notification);
+const handleNotification=(item)=>{
+  navigation.navigate('Notification',{
+    product: item.productName,
+    expiryDate : item.expiryDate,
+  });
 }
 const renderItem = ({ item }) => (
     <View style={styles.row}>
@@ -40,7 +43,7 @@ const renderItem = ({ item }) => (
       <Text style={styles.cell}>{item.categoryName}</Text>
       <Text style={styles.cell}>{item.dateType}</Text>
       <Text style={styles.cell}>{item.expiryDate}</Text>
-      <Button title="Notify" onPress={handleNotification}/>
+      <Button title="Notify" onPress={() => handleNotification(item)} />
       {/* Add more Text components for additional columns */}
     </View>
   );
